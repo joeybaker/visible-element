@@ -40,7 +40,7 @@ gulp.task('test', function(done){
     .on('close', done)
 })
 
-gulp.task('bump', function(done){
+gulp.task('version', function(done){
   require('child_process').spawn('npm', [
     'version'
     , argv.bump || 'patch'
@@ -86,13 +86,6 @@ gulp.task('gitPull', function(done){
   git.pull('origin', 'master', {args: '--rebase'}, done)
 })
 
-gulp.task('tag', function(done){
-  require('fs').readFile(require('path').join(__dirname, './package.json'), {encoding: 'utf8'}, function(err, file){
-    var version = JSON.parse(file).version
-    git.tag('v' + version, version, null, done)
-  })
-})
-
 gulp.task('gitPush', function(done){
   git.push('origin', 'master', {args: '--tags'}, done)
 })
@@ -108,8 +101,7 @@ gulp.task('publish', function(done){
     , 'gitPull'
     , 'gitPrep'
     , ['lint', 'test']
-    , 'bump'
-    , 'tag'
+    , 'version'
     , 'gitPush'
     , 'npmPublish'
     , done
