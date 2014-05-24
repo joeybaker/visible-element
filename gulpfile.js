@@ -87,7 +87,7 @@ gulp.task('gitPull', function(done){
 })
 
 gulp.task('gitPush', function(done){
-  git.push('origin', 'master', {args: '--tags'}, done)
+  return git.push('origin', 'master', {args: '--tags'}, done)
     .end()
 })
 
