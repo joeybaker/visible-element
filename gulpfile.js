@@ -35,12 +35,12 @@ gulp.task('lint', function(){
     }))
 })
 
-gulp.task('test', ['lint'], function(done){
+gulp.task('test', function(done){
   require('child_process').spawn('npm', ['test'], {stdio: 'inherit', cwd: __dirname})
     .on('close', done)
 })
 
-gulp.task('bump', ['gitPull', 'test'], function(){
+gulp.task('bump', function(){
   return gulp.src('./package.json')
     .pipe(bump({
       type: argv.bump || 'patch'
@@ -82,28 +82,41 @@ gulp.task('gitPrep', function(done){
   require('child_process').exec(isClean, {cwd: __dirname}, done)
 })
 
-gulp.task('gitPull', ['gitPrep'], function(done){
+gulp.task('gitPull', function(done){
   git.pull('origin', 'master', {args: '--rebase'}, done)
 })
 
-gulp.task('gitCommit', ['bump'], function(){
+gulp.task('gitCommit', function(){
   var pkg = require('./package.json')
 
   return gulp.src('./package.json')
     .pipe(git.commit(pkg.version))
 })
 
-gulp.task('tag', ['gitCommit'], function(done){
+gulp.task('tag', function(done){
   var pkg = require('./package.json')
 
   git.tag('v' + pkg.version, pkg.version, null, done)
 })
 
-gulp.task('gitPush', ['tag'], function(done){
+gulp.task('gitPush', function(done){
   git.push('origin', 'master', {args: '--tags'}, done)
 })
 
-gulp.task('publish', ['gitPush'], function(done){
+gulp.task('npmPublish', function(done){
   require('child_process').spawn('npm', ['publish'], {stdio: 'inherit', cwd: __dirname})
     .on('close', done)
 })
+
+gulp.task('publish', [
+  'gitPrep'
+  , 'gitPull'
+  , 'gitPrep'
+  , 'lint'
+  , 'test'
+  , 'bump'
+  , 'gitCommit'
+  , 'tag'
+  , 'gitPush'
+  , 'npmPublish'
+])

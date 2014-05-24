@@ -7,20 +7,20 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/prova -b -q -e -l chrome test/index.js"
-    , "tdd": "./node_modules/.bin/prova -b -e -l chrome test/index.js"
+    "test": "./node_modules/.bin/prova -b -q -e -l chrome test/index.js",
+    "tdd": "./node_modules/.bin/prova -b -e -l chrome test/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:joeybaker/visible-element.git"
   },
   "keywords": [
-    "DOM"
-    , "browser"
-    , "viewable"
-    , "viewport"
-    , "container"
-    , "visible"
+    "DOM",
+    "browser",
+    "viewable",
+    "viewport",
+    "container",
+    "visible"
   ],
   "authors": [
     {
