@@ -87,10 +87,10 @@ gulp.task('gitPull', function(done){
 })
 
 gulp.task('tag', function(done){
-  var pkg = require('./package.json')
-    , version = pkg.version
-
-  git.tag('v' + version, version, null, done)
+  require('fs').readFile(require('path').join(__dirname, './package.json'), {encoding: 'utf8'}, function(err, file){
+    var version = JSON.parse(file).version
+    git.tag('v' + version, version, null, done)
+  })
 })
 
 gulp.task('gitPush', function(done){
