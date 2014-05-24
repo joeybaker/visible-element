@@ -1,6 +1,6 @@
 {
   "name": "visible-element",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Check a DOM element to see if it's user visible.",
   "browser": "index.js",
   "directories": {
