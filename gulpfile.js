@@ -9,8 +9,6 @@ var gulp = require('gulp')
   , git = require('gulp-git')
   , todo = require('gulp-todo')
   , argv = require('minimist')(process.argv.slice(2)) || {}
-  , path = require('path')
-  , fs = require('fs')
   , runSequence = require('run-sequence')
   , paths = {
     app: ['./lib/**/*.js', './index.js']
@@ -89,13 +87,10 @@ gulp.task('gitPull', function(done){
 })
 
 gulp.task('tag', function(done){
-  console.log(path.resolve(__dirname, './package.json'))
-  fs.readFile(path.resolve(__dirname, './package.json'), {encoding: 'utf8'}, function(pkg){
-    console.log(pkg)
-    var version = JSON.parse(pkg).version
-    git.tag('v' + version, version, null, done)
-  })
+  var pkg = require('./package.json')
+    , version = pkg.version
 
+  git.tag('v' + version, version, null, done)
 })
 
 gulp.task('gitPush', function(done){
