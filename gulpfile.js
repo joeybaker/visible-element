@@ -9,7 +9,9 @@ var gulp = require('gulp')
   , git = require('gulp-git')
   , todo = require('gulp-todo')
   , argv = require('minimist')(process.argv.slice(2)) || {}
-  , bump = require('gulp-bump')
+  , path = require('path')
+  , fs = require('fs')
+  , runSequence = require('run-sequence')
   , paths = {
     app: ['./lib/**/*.js', './index.js']
     , tests: ['./test/**/*.js']
@@ -40,13 +42,13 @@ gulp.task('test', function(done){
     .on('close', done)
 })
 
-gulp.task('bump', function(){
-  return gulp.src('./package.json')
-    .pipe(bump({
-      type: argv.bump || 'patch'
-      , indent: 2
-    }))
-    .pipe(gulp.dest('./'))
+gulp.task('bump', function(done){
+  require('child_process').spawn('npm', [
+    'version'
+    , argv.bump || 'patch'
+    , '-m "%s"'
+  ], {stdio: 'inherit', cwd: __dirname})
+    .on('close', done)
 })
 
 gulp.task('gitPrep', function(done){
@@ -86,17 +88,14 @@ gulp.task('gitPull', function(done){
   git.pull('origin', 'master', {args: '--rebase'}, done)
 })
 
-gulp.task('gitCommit', function(){
-  var pkg = require('./package.json')
-
-  return gulp.src('./package.json')
-    .pipe(git.commit(pkg.version))
-})
-
 gulp.task('tag', function(done){
-  var pkg = require('./package.json')
+  console.log(path.resolve(__dirname, './package.json'))
+  fs.readFile(path.resolve(__dirname, './package.json'), {encoding: 'utf8'}, function(pkg){
+    console.log(pkg)
+    var version = JSON.parse(pkg).version
+    git.tag('v' + version, version, null, done)
+  })
 
-  git.tag('v' + pkg.version, pkg.version, null, done)
 })
 
 gulp.task('gitPush', function(done){
@@ -108,15 +107,16 @@ gulp.task('npmPublish', function(done){
     .on('close', done)
 })
 
-gulp.task('publish', [
-  'gitPrep'
-  , 'gitPull'
-  , 'gitPrep'
-  , 'lint'
-  , 'test'
-  , 'bump'
-  , 'gitCommit'
-  , 'tag'
-  , 'gitPush'
-  , 'npmPublish'
-])
+gulp.task('publish', function(done){
+  runSequence(
+    'gitPrep'
+    , 'gitPull'
+    , 'gitPrep'
+    , ['lint', 'test']
+    , 'bump'
+    , 'tag'
+    , 'gitPush'
+    , 'npmPublish'
+    , done
+  )
+})
