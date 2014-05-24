@@ -103,8 +103,7 @@ gulp.task('publish', function(done){
     , 'gitPrep'
     , ['lint', 'test']
     , 'version'
-    , 'gitPush'
-    , 'npmPublish'
+    , ['gitPush', 'npmPublish']
     , done
   )
 })
