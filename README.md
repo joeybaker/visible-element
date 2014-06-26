@@ -1,6 +1,6 @@
 # Visible Element
 
-[![NPM](https://nodei.co/npm/visible-element.png)](https://nodei.co/npm/visible-element/) [![Build Status](https://travis-ci.org/joeybaker/visible-element.png?branch=master)](https://travis-ci.org/joeybaker/visible-element)
+[![NPM](https://nodei.co/npm/visible-element.png)](https://nodei.co/npm/visible-element/)
 
 For browsers only. Has two methods that allow you to detect if an element is visible to the user.
 
