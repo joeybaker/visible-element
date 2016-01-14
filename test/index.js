@@ -1,12 +1,14 @@
 var test = require('tape')
   , $ = require('jquery')
   , $body = $('body')
-  , viewable = require('../')($)
+  , viewableInit = require('../')
 
 test('inViewport', function(t){
   var $el = $body.append('<div id="up-high" />').find('#up-high')
-  , spacer = $body.append('<div id="spacer" />').find('#spacer')
-  , $bottomEl = $body.append('<div id="bottom" />').find('#bottom')
+    , spacer = $body.append('<div id="spacer" />').find('#spacer')
+    , $bottomEl = $body.append('<div id="bottom" />').find('#bottom')
+    , viewable = viewableInit()
+    , viewableNoLib = viewableInit($)
 
   // the test will likely be run from an iframe
   spacer.height((window.innerHeight || parent.window.innerHeight) * 2)
@@ -21,7 +23,7 @@ test('inViewport', function(t){
   )
 
   t.equal(
-    viewable.inViewport($el)
+    viewableNoLib.inViewport($el)
     , true
     , 'works for visible jquery els'
   )
@@ -45,6 +47,7 @@ test('inContainer', function(t){
   var $parent = $body.append('<div id="parent" style="overflow: hidden; height: 200px" />').find('#parent')
     , $visible = $parent.append('<div id="visible" style="height: 200px" />').find('#visible')
     , $invisible = $parent.append('<div id="invisible" style="height: 200px" />').find('#invisible')
+    , viewable = viewableInit($)
 
   t.plan(4)
 

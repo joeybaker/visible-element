@@ -12,7 +12,7 @@ function inViewport(el){
     , rect
 
   // special bonus for those using jQuery
-  if (el instanceof $) el = el[0]
+  if ($ && el instanceof $) el = el[0]
 
   rect = el.getBoundingClientRect()
 
