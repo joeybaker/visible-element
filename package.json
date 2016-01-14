@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "browserify test/index.js | tap-closer | smokestack | tap-spec",
-    "tdd": "browserify test/index.js | smokestack | tap-spec"
+    "tdd": "browserify test/index.js | smokestack | tap-spec",
+    "release": "f () { gulp publish $@; }; f"
   },
   "repository": {
     "type": "git",
