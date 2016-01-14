@@ -1,4 +1,4 @@
-var test = require('prova')
+var test = require('tape')
   , $ = require('jquery')
   , $body = $('body')
   , viewable = require('../')($)
