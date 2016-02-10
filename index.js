@@ -10,11 +10,11 @@ function inViewport(el, pad){
   var height = (window.innerHeight || document.documentElement.clientHeight) /*or $(window).height() */
     , width = (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
     , rect
-    
-  if (typeof pad ==='undefined'){
+
+  if (typeof pad === 'undefined'){
     pad = 0;
   }
-  
+
   if (typeof pad === 'number'){
     pad = {
       top: pad,
