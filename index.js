@@ -17,10 +17,10 @@ function inViewport(el, pad){
 
   if (typeof pad === 'number'){
     pad = {
-      top: pad,
-      left: pad,
-      bottom: pad,
-      right: pad
+      top: pad
+      , left: pad
+      , bottom: pad
+      , right: pad
     }
   }
 
