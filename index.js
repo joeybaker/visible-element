@@ -6,10 +6,23 @@ var $
   how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport/7557433#7557433
 */
 
-function inViewport(el){
+function inViewport(el, pad){
   var height = (window.innerHeight || document.documentElement.clientHeight) /*or $(window).height() */
     , width = (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
     , rect
+
+  if (typeof pad === 'undefined'){
+    pad = 0;
+  }
+
+  if (typeof pad === 'number'){
+    pad = {
+      top: pad
+      , left: pad
+      , bottom: pad
+      , right: pad
+    }
+  }
 
   // special bonus for those using jQuery
   if ($ && el instanceof $) el = el[0]
@@ -17,10 +30,10 @@ function inViewport(el){
   rect = el.getBoundingClientRect()
 
   return (
-      rect.top >= 0
-      && rect.left >= 0
-      && rect.bottom <= height
-      && rect.right <= width
+      rect.top >= 0 + pad.top
+      && rect.left >= 0 + pad.left
+      && rect.bottom <= height - pad.bottom
+      && rect.right <= width - pad.right
     )
 }
 
